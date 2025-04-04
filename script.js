@@ -1,8 +1,8 @@
-// Garantir que todos os elementos DOM estão acessíveis após o carregamento
 document.addEventListener('DOMContentLoaded', () => {
     const svg = document.getElementById('pattern-svg');
     const loadingOverlay = document.getElementById('loading-overlay');
-    
+
+    // Controles de entrada
     const elementsInput = document.getElementById('elements');
     const sizeInput = document.getElementById('size');
     const complexityInput = document.getElementById('complexity');
@@ -13,15 +13,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const noiseToggle = document.getElementById('noise-toggle');
     const gridToggle = document.getElementById('grid-toggle');
     const transparencyInput = document.getElementById('transparency');
+    const transparencyValue = document.getElementById('transparency-value');
     const generateBtn = document.getElementById('generate-btn');
     const randomizeBtn = document.getElementById('randomize-btn');
     const downloadBtn = document.getElementById('download-btn');
     const presetBtns = document.querySelectorAll('.preset-btn');
 
-    // Função para sanitização de entradas, prevenindo XSS
+    // Função de sanitização de entradas para segurança
     const sanitizeInput = (input) => {
         return input.replace(/[^a-zA-Z0-9-_ ]/g, ''); // Permite apenas caracteres alfanuméricos e alguns especiais
     };
+
+    // Atualiza o valor de transparência ao mover o controle deslizante
+    transparencyInput.addEventListener('input', () => {
+        transparencyValue.textContent = transparencyInput.value;
+    });
 
     // Função para mostrar overlay de carregamento
     function showLoadingOverlay() {
@@ -33,36 +39,100 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingOverlay.classList.remove('active');
     }
 
-    // Função para desenhar o padrão SVG com base nos inputs
+    // Função para gerar o padrão baseado nos parâmetros
     function generatePattern(patternType, elements, size, complexity, rotation, transparency) {
         svg.innerHTML = ''; // Limpa o conteúdo SVG antes de gerar um novo
-
-        // Exemplo simples de como desenhar o padrão baseado nos parâmetros
         const width = svg.getAttribute('width');
         const height = svg.getAttribute('height');
 
-        const colors = {
-            primary: '#00a2ff',
-            secondary: '#00ffe1',
-            accent: '#ff00d4',
-            background: '#051b2c'
-        };
+        // Cores personalizadas
+        const primaryColor = document.getElementById('primary-color').value;
+        const secondaryColor = document.getElementById('secondary-color').value;
+        const accentColor = document.getElementById('accent-color').value;
+        const backgroundColor = document.getElementById('background-color').value;
 
-        // Desenha elementos no SVG (exemplo básico de círculos)
+        // Define o tipo de padrão e gera a forma correspondente
         for (let i = 0; i < elements; i++) {
-            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-            circle.setAttribute('cx', Math.random() * width);
-            circle.setAttribute('cy', Math.random() * height);
-            circle.setAttribute('r', size);
-            circle.setAttribute('fill', colors.primary);
-            circle.setAttribute('opacity', transparency / 100);
+            let shape;
 
-            // Adiciona rotação ao padrão
+            switch (patternType) {
+                case 'circuit': // Gerar linhas para um padrão de circuito
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    shape.setAttribute('x1', Math.random() * width);
+                    shape.setAttribute('y1', Math.random() * height);
+                    shape.setAttribute('x2', Math.random() * width);
+                    shape.setAttribute('y2', Math.random() * height);
+                    shape.setAttribute('stroke', primaryColor);
+                    shape.setAttribute('stroke-width', size);
+                    break;
+                case 'dataFlow': // Gerar círculos para um fluxo de dados
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    shape.setAttribute('cx', Math.random() * width);
+                    shape.setAttribute('cy', Math.random() * height);
+                    shape.setAttribute('r', size);
+                    shape.setAttribute('fill', secondaryColor);
+                    break;
+                case 'network': // Gerar retângulos para rede neural
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    shape.setAttribute('x', Math.random() * width);
+                    shape.setAttribute('y', Math.random() * height);
+                    shape.setAttribute('width', size * 2);
+                    shape.setAttribute('height', size);
+                    shape.setAttribute('fill', accentColor);
+                    break;
+                case 'matrix': // Gerar quadrados para matrix
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                    shape.setAttribute('x', Math.random() * width);
+                    shape.setAttribute('y', Math.random() * height);
+                    shape.setAttribute('width', size);
+                    shape.setAttribute('height', size);
+                    shape.setAttribute('fill', primaryColor);
+                    break;
+                case 'hexGrid': // Gerar hexágonos
+                    shape = generateHexagon(Math.random() * width, Math.random() * height, size);
+                    break;
+                case 'particles': // Gerar círculos menores como partículas
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    shape.setAttribute('cx', Math.random() * width);
+                    shape.setAttribute('cy', Math.random() * height);
+                    shape.setAttribute('r', size / 2);
+                    shape.setAttribute('fill', accentColor);
+                    break;
+                case 'cyberspace': // Gerar linhas pontilhadas para efeito de ciberespaço
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    shape.setAttribute('x1', Math.random() * width);
+                    shape.setAttribute('y1', Math.random() * height);
+                    shape.setAttribute('x2', Math.random() * width);
+                    shape.setAttribute('y2', Math.random() * height);
+                    shape.setAttribute('stroke', secondaryColor);
+                    shape.setAttribute('stroke-width', size);
+                    shape.setAttribute('stroke-dasharray', '5,5');
+                    break;
+                case 'blueprint': // Gerar círculos com borda
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    shape.setAttribute('cx', Math.random() * width);
+                    shape.setAttribute('cy', Math.random() * height);
+                    shape.setAttribute('r', size);
+                    shape.setAttribute('fill', 'none');
+                    shape.setAttribute('stroke', primaryColor);
+                    shape.setAttribute('stroke-width', 2);
+                    break;
+                default:
+                    shape = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    shape.setAttribute('cx', Math.random() * width);
+                    shape.setAttribute('cy', Math.random() * height);
+                    shape.setAttribute('r', size);
+                    shape.setAttribute('fill', primaryColor);
+            }
+
+            // Adiciona a opacidade e rotação ao padrão
+            shape.setAttribute('opacity', transparency / 100);
+
             const rotateX = Math.random() * width;
             const rotateY = Math.random() * height;
-            circle.setAttribute('transform', `rotate(${rotation}, ${rotateX}, ${rotateY})`);
+            shape.setAttribute('transform', `rotate(${rotation}, ${rotateX}, ${rotateY})`);
             
-            svg.appendChild(circle);
+            svg.appendChild(shape);
         }
 
         // Aplicar animações e efeitos conforme as opções
@@ -77,6 +147,28 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gridToggle.checked) {
             drawGrid();
         }
+
+        if (noiseToggle.checked) {
+            addNoiseEffect();
+        }
+    }
+
+    // Função para desenhar um hexágono (para "hexGrid")
+    function generateHexagon(x, y, size) {
+        const hexagon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        const points = [
+            { x: x, y: y - size },
+            { x: x + size * Math.cos(Math.PI / 3), y: y - size / 2 },
+            { x: x + size * Math.cos(Math.PI / 3), y: y + size / 2 },
+            { x: x, y: y + size },
+            { x: x - size * Math.cos(Math.PI / 3), y: y + size / 2 },
+            { x: x - size * Math.cos(Math.PI / 3), y: y - size / 2 }
+        ];
+        const pointsString = points.map(p => `${p.x},${p.y}`).join(' ');
+
+        hexagon.setAttribute('points', pointsString);
+        hexagon.setAttribute('fill', '#00a2ff');
+        return hexagon;
     }
 
     // Função para desenhar uma grade no SVG
@@ -105,6 +197,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 line2.setAttribute('stroke-width', 0.5);
                 svg.appendChild(line2);
             }
+        }
+    }
+
+    // Função para adicionar ruído digital ao SVG
+    function addNoiseEffect() {
+        const width = svg.getAttribute('width');
+        const height = svg.getAttribute('height');
+        const noiseCount = 100; // Número de partículas de ruído
+        for (let i = 0; i < noiseCount; i++) {
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', Math.random() * width);
+            circle.setAttribute('cy', Math.random() * height);
+            circle.setAttribute('r', 1);
+            circle.setAttribute('fill', 'rgba(255, 255, 255, 0.5)');
+            svg.appendChild(circle);
         }
     }
 
@@ -215,12 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
             hideLoadingOverlay();
         }, 300);
     }
-
-    // Atualizar a porcentagem exibida para o controle de transparência
-transparencyInput.addEventListener('input', () => {
-    transparencyValue.textContent = transparencyInput.value; // Atualiza a visualização da porcentagem
-});
-
 
     // Eventos para os botões de preset
     presetBtns.forEach((btn) => {
