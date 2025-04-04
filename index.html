@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Padrões Tecnológicos SVG</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gerador de Padrões Tecnológicos</h1>
+            <p class="subtitle">Crie visualizações de conceitos tecnológicos em SVG</p>
+        </header>
+        
+        <div class="canvas-container">
+            <svg id="pattern-svg" width="800" height="500" viewBox="0 0 800 500"></svg>
+            <div class="canvas-overlay" id="loading-overlay">
+                <div class="loader"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <div class="controls-section">
+                <h3>Tipo de Padrão</h3>
+                <div class="control-group">
+                    <label for="pattern-type">Escolha um tema:</label>
+                    <select id="pattern-type">
+                        <option value="circuit">Circuito</option>
+                        <option value="dataFlow">Fluxo de Dados</option>
+                        <option value="network">Rede Neural</option>
+                        <option value="matrix">Matrix</option>
+                        <option value="hexGrid">Grade Hexagonal</option>
+                        <option value="particles">Partículas</option>
+                        <option value="cyberspace">Ciberespaço</option>
+                        <option value="blueprint">Blueprint Técnico</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <h3>Parâmetros Básicos</h3>
+                <div class="control-group">
+                    <label for="elements">Densidade: <span id="elements-value">50</span></label>
+                    <input type="range" id="elements" min="10" max="300" value="50">
+                </div>
+                
+                <div class="control-group">
+                    <label for="size">Escala: <span id="size-value">20</span></label>
+                    <input type="range" id="size" min="2" max="50" value="20">
+                </div>
+                
+                <div class="control-group">
+                    <label for="complexity">Complexidade: <span id="complexity-value">5</span></label>
+                    <input type="range" id="complexity" min="1" max="10" value="5">
+                </div>
+                
+                <div class="control-group">
+                    <label for="rotation">Rotação: <span id="rotation-value">0</span>°</label>
+                    <input type="range" id="rotation" min="0" max="360" value="0">
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <h3>Esquema de Cores</h3>
+                <div class="control-group">
+                    <label for="color-theme">Tema de Cores:</label>
+                    <select id="color-theme">
+                        <option value="custom">Personalizado</option>
+                        <option value="cyberpunk">Cyberpunk</option>
+                        <option value="matrix">Matrix</option>
+                        <option value="blueprint">Blueprint</option>
+                        <option value="neon">Neon</option>
+                        <option value="holo">Holográfico</option>
+                        <option value="tech">Tech Corporativo</option>
+                    </select>
+                </div>
+                
+                <div id="custom-colors">
+                    <div class="control-group">
+                        <label for="primary-color">Cor Primária:</label>
+                        <input type="color" id="primary-color" value="#00a2ff">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="secondary-color">Cor Secundária:</label>
+                        <input type="color" id="secondary-color" value="#00ffe1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="accent-color">Cor de Destaque:</label>
+                        <input type="color" id="accent-color" value="#ff00d4">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="background-color">Cor de Fundo:</label>
+                        <input type="color" id="background-color" value="#051b2c">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls-section">
+                <h3>Efeitos Especiais</h3>
+                <div class="control-group checkbox-group">
+                    <input type="checkbox" id="glow-effect" checked>
+                    <label for="glow-effect">Efeito de Brilho</label>
+                </div>
+                
+                <div class="control-group checkbox-group">
+                    <input type="checkbox" id="animation-toggle">
+                    <label for="animation-toggle">Animação</label>
+                </div>
+                
+                <div class="control-group checkbox-group">
+                    <input type="checkbox" id="noise-toggle">
+                    <label for="noise-toggle">Ruído Digital</label>
+                </div>
+                
+                <div class="control-group checkbox-group">
+                    <input type="checkbox" id="grid-toggle" checked>
+                    <label for="grid-toggle">Mostrar Grade</label>
+                </div>
+                
+                <div class="control-group">
+                    <label for="transparency">Transparência: <span id="transparency-value">30</span>%</label>
+                    <input type="range" id="transparency" min="0" max="80" value="30">
+                </div>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button id="generate-btn" class="primary-btn">Gerar Padrão</button>
+            <button id="randomize-btn" class="secondary-btn">Aleatório</button>
+            <button id="download-btn" class="action-btn">Baixar SVG</button>
+        </div>
+        
+        <div class="presets">
+            <h3>Presets Rápidos</h3>
+            <div class="preset-buttons">
+                <button class="preset-btn" data-preset="circuitBoard">Placa de Circuito</button>
+                <button class="preset-btn" data-preset="neuralNetwork">Rede Neural</button>
+                <button class="preset-btn" data-preset="cyberGrid">Grid Cyber</button>
+                <button class="preset-btn" data-preset="dataStream">Fluxo de Dados</button>
+                <button class="preset-btn" data-preset="techBlueprint">Blueprint Tech</button>
+                <button class="preset-btn" data-preset="aiVision">Visão de IA</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
