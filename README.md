@@ -1,3 +1,6 @@
+
+![screencapture-127-0-0-1-5500-2025-04-04-15_06_13](https://github.com/user-attachments/assets/ce97e691-e138-4fe4-a882-e43984758213)
+
 # Gerador de Padrões Tecnológicos SVG
 
 Este é um **gerador de padrões tecnológicos** interativo que cria visualizações em **SVG**. O projeto foi desenvolvido para oferecer uma maneira fácil de criar padrões dinâmicos, como circuitos, fluxos de dados e redes neurais. A aplicação permite a personalização dos padrões com ajustes de densidade, escala, complexidade, efeitos e mais.
